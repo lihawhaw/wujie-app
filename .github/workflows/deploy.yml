@@ -28,10 +28,10 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: cd main && pnpm install
 
       - name: Build
-        run: pnpm build
+        run: cd main && pnpm build
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -53,7 +53,7 @@ jobs:
           OSS_REGION: oss-cn-hangzhou
           OSS_BUCKET: micro-app-fe
           OSS_PATH: /wujie-main/
-          UPLOAD_PATH: ./dist
+          UPLOAD_PATH: ./main/dist
 
       - name: Setup pnpm cache
         uses: actions/cache@v3

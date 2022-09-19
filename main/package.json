@@ -6,9 +6,9 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "build": " cross-env NODE_ENV=production webpack",
-    "lint": "eslint ./src --ext .js,.ts,.tsx --cache --fix",
+    "lint": "eslint src --ext .js,.ts,.tsx --cache --fix",
     "fix-code": "prettier-eslint --write 'src/**/*.{ts,tsx}'",
-    "prepare": "husky install",
+    "prepare": "husky install || echo 'error'",
     "analyzer": "cross-env NODE_ENV=production ANALYZER=true webpack",
     "webpack:stats": "webpack --config webpack.config.js --profile --json > stats.json"
   },
@@ -20,7 +20,8 @@
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.0"
+    "react-router-dom": "^6.4.0",
+    "wujie-react": "1.0.0-rc.16"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

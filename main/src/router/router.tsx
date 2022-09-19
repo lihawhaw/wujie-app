@@ -3,9 +3,10 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import loadable from '@loadable/component'
 // import Layout from '@/layout'
 
-const Home = loadable(() => import('@/pages/home'))
-const About = loadable(() => import('@/pages/about'))
-const NoMatch = loadable(() => import('@/components/no-match'))
+const Home = loadable(() => import('../pages/home'))
+const About = loadable(() => import('../pages/about'))
+const Wujie = loadable(() => import('../pages/wujie'))
+const NoMatch = loadable(() => import('../components/no-match'))
 
 export default function AppRouter() {
   return (
@@ -13,6 +14,7 @@ export default function AppRouter() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='about' element={<About />} />
+        <Route path='wujie' element={<Wujie />} />
         <Route path='*' element={<NoMatch />} />
       </Routes>
     </BrowserRouter>

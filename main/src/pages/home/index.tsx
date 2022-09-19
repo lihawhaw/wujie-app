@@ -6,6 +6,8 @@ export default function HomePage() {
     <div>
       HomePage
       <Link to='/about'>About</Link>
+      <hr />
+      <Link to='/wujie'>wujie</Link>
     </div>
   )
 }
