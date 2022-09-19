@@ -1,4 +1,4 @@
-name: Deploy gh-pages
+name: Deploy oss
 
 on:
   push:
@@ -38,11 +38,22 @@ jobs:
         run: |
           echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
 
-      - name: Deploy gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+#      - name: Deploy gh-pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: ./dist
+
+      - name: Upload to Aliyun oss
+        id: upload_to_oss
+        uses: royalrover/workbench-oss@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          ACCESS_KEY:  ${{ secrets.ACCESS_KEY_ID }}
+          ACCESS_SECRET: ${{ secrets.ACCESS_KEY_SECRET }}
+          OSS_REGION: oss-cn-hangzhou
+          OSS_BUCKET: micro-app-fe
+          OSS_PATH: /template-react/
+          UPLOAD_PATH: ./dist
 
       - name: Setup pnpm cache
         uses: actions/cache@v3
