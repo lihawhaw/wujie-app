@@ -4,8 +4,8 @@ const { ESBuildMinifyPlugin } = require('esbuild-loader')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 // const TerserPlugin = require('terser-webpack-plugin')
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 // const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 // const smp = new SpeedMeasurePlugin()
 // smp.wrap()
@@ -15,10 +15,9 @@ const devtool = isProd ? false : 'eval-cheap-module-source-map'
 const minimizer = []
 const basePlugin = []
 const baseRules = []
-const publicPath = isProd ? '/template-react/' : '/'
-let chunkFilename = '[name].[chunkhash].chunk.js'
-let filename = '[name].[contenthash].bundle.js'
-
+const publicPath = isProd ? 'https://cdn.micro.lihaha.cn/wujie-main/' : '/'
+let chunkFilename = 'static/[name].[chunkhash].chunk.js'
+let filename = 'static/[name].[contenthash].bundle.js'
 if (startAnalyzer) {
   basePlugin.push(new BundleAnalyzerPlugin())
 }
@@ -30,34 +29,53 @@ if (isProd) {
     }),
     // new TerserPlugin({ parallel: true, minify: TerserPlugin.esbuildMinify }),
   )
-  baseRules.push({
-    test: /\.tsx?$/,
-    exclude: /(node_modules|bower_components)/,
-    use: {
-      loader: 'esbuild-loader',
-      options: {
-        loader: 'tsx',
-        target: 'es2015',
-        // tsconfigRaw: require('./tsconfig.json'),
+  baseRules.push(
+    {
+      test: /\.tsx?$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2015',
+          // tsconfigRaw: require('./tsconfig.json'),
+        },
       },
     },
-  })
+    {
+      test: /\.less$/i,
+      use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+    },
+  )
+  basePlugin.push(
+    new MiniCssExtractPlugin({
+      filename: 'static/[name].[contenthash].css',
+      chunkFilename: 'static/[id].[contenthash].css',
+      ignoreOrder: false,
+    }),
+  )
 } else {
-  baseRules.push({
-    test: /\.tsx?$/,
-    exclude: /(node_modules|bower_components)/,
-    use: {
-      loader: 'swc-loader',
-      options: {
-        sync: true,
-        jsc: {
-          parser: {
-            syntax: 'typescript',
+  baseRules.push(
+    {
+      test: /\.tsx?$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'swc-loader',
+        options: {
+          sync: true,
+          jsc: {
+            parser: {
+              syntax: 'typescript',
+            },
           },
         },
       },
     },
-  })
+    {
+      test: /\.less$/i,
+      use: ['style-loader', 'css-loader', 'less-loader'],
+    },
+  )
 
   filename = '[name].js'
   chunkFilename = '[name].chunk.js'

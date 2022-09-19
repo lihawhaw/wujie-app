@@ -52,7 +52,7 @@ jobs:
           ACCESS_SECRET: ${{ secrets.ACCESS_KEY_SECRET }}
           OSS_REGION: oss-cn-hangzhou
           OSS_BUCKET: micro-app-fe
-          OSS_PATH: /template-react/
+          OSS_PATH: /wujie-main/
           UPLOAD_PATH: ./dist
 
       - name: Setup pnpm cache
